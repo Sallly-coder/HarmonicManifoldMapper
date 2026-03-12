@@ -262,3 +262,23 @@ if __name__ == "__main__":
 
     ext.plot_mfcc(signal, sr)
     ext.plot_mel_spectrogram(signal, sr)
+
+def extract_features_for_numpy(file_path, n_mfcc=40):
+    """
+    Returns a single feature vector combining MFCCs + Chroma.
+    Shape: (52,) — this becomes one column in your input matrix a^0
+    """
+    import librosa
+    import numpy as np
+
+    y, sr = librosa.load(file_path, duration=3.0)  # standardize length
+
+    # MFCCs — capture timbral texture (40 coefficients)
+    mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=n_mfcc)
+    mfcc_mean = np.mean(mfccs, axis=1)   # shape: (40,)
+
+    # Chroma — captures harmonic/pitch content (12 bins)
+    chroma = librosa.feature.chroma_stft(y=y, sr=sr)
+    chroma_mean = np.mean(chroma, axis=1)  # shape: (12,)
+
+    return np.concatenate([mfcc_mean, chroma_mean])  # shape: (52,)
