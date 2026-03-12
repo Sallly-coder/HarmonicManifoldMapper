@@ -39,7 +39,7 @@ class NeuralNetwork:
     # ─────────────────────────────────────────────
     # FORWARD PASS
     # Equation: z^l = w^l * a^(l-1) + b^l
-    #           a^l = σ(z^l)
+    #           a^l = sigma(z^l)
     # ─────────────────────────────────────────────
     def forward(self, X):
         """
@@ -80,25 +80,29 @@ class NeuralNetwork:
         nabla_w = [np.zeros(w.shape) for w in self.weights]
         nabla_b = [np.zeros(b.shape) for b in self.biases]
 
-        # ── BP1: Error at the output layer ──────────────────
-        # δ^L = ∂C/∂a^L ⊙ σ'(z^L)
+        # BP1: Error at the output layer
+        # Start at the output. Compute how wrong each output neuron is, weighted by how sensitive it currently is to change. That's the error delta
+        # delta^L = delC/dela^L <hardmard> (sigma)'(z^L)
         # For softmax + quadratic cost this simplifies to (a - y)
         delta = quadratic_cost_derivative(self.activations[-1], y_true)
 
-        # ── BP4: Weight gradient at output layer ─────────────
-        # ∂C/∂w = a_in * δ_out
+        # BP4: Weight gradient at output layer 
+        #Every weight gradient in the entire network is just the product of two numbers: what was coming in and how wrong the output was
+        # delC/delw = a_in * delta_out
         nabla_w[-1] = np.dot(delta, self.activations[-2].T) / m
 
-        # ── BP3: Bias gradient at output layer ───────────────
-        # ∂C/∂b = δ
+        # BP3: Bias gradient at output layer
+        #the amount you need to slide each neuron's space is exactly measured by how wrong that neuron currently is.
+        # delC/delb = delta
         nabla_b[-1] = np.sum(delta, axis=1, keepdims=True) / m
 
-        # ── BP2: Propagate error BACKWARDS through all layers ─
-        # δ^l = ((w^(l+1))^T * δ^(l+1)) ⊙ σ'(z^l)
+        # BP2: Propagate error BACKWARDS through all layers 
+        # We already started with BP1 at the output. Apply BP2 once to get delta at layer L-1. Apply BP2 again to get delta at layer L-2. Keep going. You now have delta (the error) at every single neuron in the entire network. 
+        # delta^l = ((w^(l+1))^T * delta^(l+1)) <Hardmard> (sigma)'(z^l)
         for l in range(2, self.num_layers):
             z = self.zs[-l]
             sp = sigmoid_prime(z)                              # σ'(z^l)
-            delta = np.dot(self.weights[-l+1].T, delta) * sp  # ⊙ is * in NumPy
+            delta = np.dot(self.weights[-l+1].T, delta) * sp  # <Hardmard> is * in NumPy
 
             nabla_w[-l] = np.dot(delta, self.activations[-l-1].T) / m  # BP4
             nabla_b[-l] = np.sum(delta, axis=1, keepdims=True) / m     # BP3
@@ -108,8 +112,8 @@ class NeuralNetwork:
 
     # ─────────────────────────────────────────────
     # GRADIENT DESCENT UPDATE
-    # w → w - η * ∂C/∂w
-    # b → b - η * ∂C/∂b
+    # for w it is w-(mu)*(del)C/(del)w
+    # for b it is b-(mu)*(del)C/(del)b
     # ─────────────────────────────────────────────
     def update(self, nabla_w, nabla_b, learning_rate):
         self.weights = [w - learning_rate * nw
