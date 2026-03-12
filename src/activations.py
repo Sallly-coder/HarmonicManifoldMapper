@@ -16,6 +16,9 @@ def relu_prime(z):
     return (z > 0).astype(float)
 
 def softmax(z):
+    #Softmax is a specialized activation function and it is used 
+    #in the final layer of a neural network when the goal is to classify if you're happy or sad or neutral
+
     # numerically stable softmax
     exp_z = np.exp(z - np.max(z, axis=0, keepdims=True))
     return exp_z / np.sum(exp_z, axis=0, keepdims=True)
