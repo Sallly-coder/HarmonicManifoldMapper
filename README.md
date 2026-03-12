@@ -8,29 +8,34 @@
 Objective: Build a neural network from scratch (using NumPy for the engine) to classify emotional states from audio features, focusing on visualizing the transformation of the "data manifold" at each layer.
 
 ## The Roadmap
-Phase 1: Data Preparation (The High-Dimensional Input)
-Before the network can "reshape" space, you need to provide the raw material. Audio signals are naturally "tangled" in their raw form.
-Action: Extract MFCCs (Mel-frequency cepstral coefficients) and Chroma features from the dataset.
-Mathematical Tie-in: These features represent your input vector $a^0$. You are starting with a high-dimensional space where "Happy" and "Sad" signals are mathematically interwoven.
-Analogy: Think of this as a crumpled-up ball of two different colored papers. Your goal is to flatten them out without tearing them (Homeomorphism).
-Phase 2: Designing the Architecture (Width & Topology)
-Here, you apply the constraints of Width and Homeomorphism discussed in the core concepts.
-Action: Define the number of hidden layers and neurons. Ensure the "Width" is sufficient (at least 3 neurons if you want to visualize 3D transformations) so the network doesn't run into a topological "dead end" where it cannot lift the data high enough to separate it.
-Mathematical Tie-in: Define your weight matrices $w^l$ and bias vectors $b^l$ for each layer.
-Phase 3: The "Hadamard" Engine (Backpropagation from Scratch)
-Instead of using a library, you will implement the learning process manually to master the notation $z_j^l$ and $a_j^l$.
-Action: Write the forward pass using the weighted input formula: $z^l = w^la^{l-1} + b^l$.
-The Gradient: Implement the backpropagation using the Hadamard Product ($s \odot t$) to calculate the error $\delta^l$.
-Logic: This ensures you are calculating the "sensitivity" of each individual neuron’s error without mixing them into a single sum prematurely.
-Phase 4: Navigating the Landscape (Optimization)
-Now you focus on how the network "finds" the solution in the 13,000+ dimensional cost landscape.
-Action: Implement Gradient Descent with a configurable learning rate ($\eta$).
-Experiment: Observe how the cost function behaves. If $\eta$ is too high, you’ll "jump" over the valley of the solution; if it's too low, you’ll crawl too slowly.
-Goal: Reach the "global minimum" where the network has successfully learned the weights that separate the emotions.
-Phase 5: Manifold Visualization (The Solution)
-This is the final proof that the neural network has "solved" the problem by reshaping space.
-Action: Use a technique like Principal Component Analysis (PCA) or t-SNE to take the activations ($a^l$) from the final hidden layer and plot them in 2D or 3D.
-The Result: You should see that while the input data was a messy cloud, the output manifold is clean, with "Angry," "Happy," and "Neutral" signals residing in distinct, linearly separable regions of space.
+  ## Phase 1: Data Preparation (The High-Dimensional Input)
+  Before the network can "reshape" space, you need to provide the raw material. Audio signals are naturally "tangled" in their raw form.
+  Action: Extract MFCCs (Mel-frequency cepstral coefficients) and Chroma features from the dataset.
+  Mathematical Tie-in: These features represent your input vector $a^0$. You are starting with a high-dimensional space where "Happy
+  and "Sad" signals are mathematically interwoven.
+  Analogy: Think of this as a crumpled-up ball of two different colored papers. Your goal is to flatten them out without tearing them (Homeomorphism).
+
+  ## Phase 2: Designing the Architecture (Width & Topology)
+  Here, you apply the constraints of Width and Homeomorphism discussed in the core concepts.
+  Action: Define the number of hidden layers and neurons. Ensure the "Width" is sufficient (at least 3 neurons if you want to visualize    3D transformations) so the network doesn't run into a topological "dead end" where it cannot lift the data high enough to separate it.
+  Mathematical Tie-in: Define your weight matrices $w^l$ and bias vectors $b^l$ for each layer.
+
+  ## Phase 3: The "Hadamard" Engine (Backpropagation from Scratch)
+  Instead of using a library, you will implement the learning process manually to master the notation $z_j^l$ and $a_j^l$.
+  Action: Write the forward pass using the weighted input formula: $z^l = w^la^{l-1} + b^l$.
+  The Gradient: Implement the backpropagation using the Hadamard Product ($s \odot t$) to calculate the error $\delta^l$.
+  Logic: This ensures you are calculating the "sensitivity" of each individual neuron’s error without mixing them into a single sum prematurely.
+
+  ## Phase 4: Navigating the Landscape (Optimization)
+  Now you focus on how the network "finds" the solution in the 13,000+ dimensional cost landscape.
+  Action: Implement Gradient Descent with a configurable learning rate ($\eta$).
+  Experiment: Observe how the cost function behaves. If $\eta$ is too high, you’ll "jump" over the valley of the solution; if it's too   low, you’ll crawl too slowly.
+  Goal: Reach the "global minimum" where the network has successfully learned the weights that separate the emotions.
+
+  ## Phase 5: Manifold Visualization (The Solution)
+  This is the final proof that the neural network has "solved" the problem by reshaping space.
+  Action: Use a technique like Principal Component Analysis (PCA) or t-SNE to take the activations ($a^l$) from the final hidden layer   and plot them in 2D or 3D.
+  The Result: You should see that while the input data was a messy cloud, the output manifold is clean, with "Angry," "Happy," and "Neutral" signals residing in distinct, linearly separable regions of space.
 
 ---
 
