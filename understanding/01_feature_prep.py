@@ -54,7 +54,7 @@ from sklearn.preprocessing import OneHotEncoder
 le = LabelEncoder()                     #The LabelEncoder takes the raw categorical strings from the audio dataset (like "angry", "happy", "sad") and maps them to a unique integer index, basically provides an ID. In a neural network, if we used these integers directly (0, 1, 2), the math might mistakenly assume that "sad" (2) is "greater than" or "further away" from "angry" (0) simply because the numbers are higher.
 y_int = le.fit_transform(labels)        # 'angry' is 0, 'happy' is 1, etc.
 
-ohe = OneHotEncoder(sparse=False)       #It converts those integers into a binary vector. This ensures all emotions are equidistant in the initial mathematical space. There is no hierarchy imposed on them, they are just different directions in an 8-dimensional space.
+ohe = OneHotEncoder(sparse_output=False)       #It converts those integers into a binary vector. This ensures all emotions are equidistant in the initial mathematical space. There is no hierarchy imposed on them, they are just different directions in an 8-dimensional space.
 y_onehot = ohe.fit_transform(y_int.reshape(-1,1))  # shape: (n_samples, 4)
 
 # Cell 5 — Normalize features (important for gradient descent)
